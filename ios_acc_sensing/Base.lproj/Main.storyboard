@@ -38,7 +38,7 @@
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" title="センシング開始" translatesAutoresizingMaskIntoConstraints="NO" id="fAx-cr-bgi">
                                 <rect key="frame" x="172" y="382" width="51" height="31"/>
                                 <connections>
-                                    <action selector="sensingChenged:" destination="BYZ-38-t0r" eventType="valueChanged" id="oOp-vK-FRA"/>
+                                    <action selector="sensingChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="pYT-NU-1rg"/>
                                 </connections>
                             </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fgp-An-0vA">
@@ -85,8 +85,8 @@
                         <outlet property="accelerometerX" destination="Vv9-2V-jWI" id="zZ9-ob-PJq"/>
                         <outlet property="accelerometerY" destination="9jt-Q6-6Hb" id="WWm-gU-Meo"/>
                         <outlet property="accelerometerZ" destination="fwc-4H-eY7" id="Jql-Vg-jVV"/>
-                        <outlet property="fileNameLavel" destination="Fgp-An-0vA" id="Rzu-XC-mmC"/>
-                        <outlet property="resultLavel" destination="q93-hc-kmB" id="1YG-eD-3Ct"/>
+                        <outlet property="fileNameLabel" destination="q93-hc-kmB" id="XyU-J8-cOX"/>
+                        <outlet property="resultLabel" destination="Fgp-An-0vA" id="DUc-Xf-dcT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

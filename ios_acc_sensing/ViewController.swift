@@ -5,42 +5,48 @@
 //  Created by k22120kk on 2023/07/13.
 //
 
-
 import UIKit
 import CoreMotion
- 
+
+/// メインビューコントローラー
 class ViewController: UIViewController {
  
-    // MotionManager
+    /// モーションマネージャー
     let motionManager = CMMotionManager()
  
-    // 3 axes
+    /// X軸の加速度ラベル
     @IBOutlet var accelerometerX: UILabel!
+    
+    /// Y軸の加速度ラベル
     @IBOutlet var accelerometerY: UILabel!
+    
+    /// Z軸の加速度ラベル
     @IBOutlet var accelerometerZ: UILabel!
-    @IBOutlet var fileNameLavel: UILabel!
-    @IBOutlet var resultLavel: UILabel!
     
+    /// ファイル名のラベル
+    @IBOutlet var fileNameLabel: UILabel!
     
-    /// 振ったかどうか格納するラベル
+    /// 結果のラベル
+    @IBOutlet var resultLabel: UILabel!
+    
+    /// 振ったかどうかを格納する変数
     var isShaked = false
     
-    ///  csvの書き込み用
-    var fileStorage:OtherFileStorage? = nil
+    /// CSVの書き込み用
+    var fileStorage: OtherFileStorage? = nil
     
-    ///　センサーデータの比較用
-    var fallDetection:FallDetection? = nil
+    /// センサーデータの比較用
+    var fallDetection: FallDetection? = nil
  
     override func viewDidLoad() {
         super.viewDidLoad()
- 
-        
     }
     
-    @IBAction func sensingChenged(_ sender: UISwitch) {
+    /// センシングの状態が変更された時の処理
+    @IBAction func sensingChanged(_ sender: UISwitch) {
         if(sender.isOn){
             fileStorage = OtherFileStorage(fileName: "\(DateUtils.getNowDate())_SensorData")
-            fileNameLavel.text = "\(DateUtils.getNowDate())_SensorData"
+            fileNameLabel.text = "\(DateUtils.getNowDate())_SensorData"
             fallDetection = FallDetection()
             startAccelerometer()
         }else{
@@ -50,42 +56,37 @@ class ViewController: UIViewController {
         }
     }
     
- 
+    /// 加速度データを出力する
     func outputAccelData(acceleration: CMAcceleration){
-        // 加速度センサー [G]
         accelerometerX.text = String(format: "%06f", acceleration.x)
         accelerometerY.text = String(format: "%06f", acceleration.y)
         accelerometerZ.text = String(format: "%06f", acceleration.z)
         
-        
-        isShaked = fallDetection?.addAccelerationData(x:acceleration.x , y: acceleration.y, z: acceleration.z) ?? false
-        resultLavel.text = isShaked ? "振ってる" : "振っていない"
-        print(isShaked)
-        
+        isShaked = fallDetection?.addAccelerationData(x: acceleration.x, y: acceleration.y, z: acceleration.z) ?? false
+        resultLabel.text = isShaked ? "振ってる" : "振っていない"
         
         fileStorage?.doLog(text: "\(DateUtils.getTimeStamp()),\(acceleration.x),\(acceleration.y),\(acceleration.z)")
     }
     
+    /// 加速度センサーのモニタリングを開始する
     func startAccelerometer(){
         if motionManager.isAccelerometerAvailable {
-            // intervalの設定 [sec]
+            // センサー値の取得間隔の設定 [sec]
 //            motionManager.accelerometerUpdateInterval = 0.01
  
-            // センサー値の取得開始
+            // センサーデータの取得を開始
             motionManager.startAccelerometerUpdates(
                 to: OperationQueue.current!,
-                withHandler: {(accelData: CMAccelerometerData?, errorOC: Error?) in
+                withHandler: { (accelData: CMAccelerometerData?, error: Error?) in
                     self.outputAccelData(acceleration: accelData!.acceleration)
             })
- 
         }
     }
  
-    // センサー取得を止める場合
+    /// 加速度センサーのモニタリングを停止する
     func stopAccelerometer(){
-        if (motionManager.isAccelerometerActive) {
+        if motionManager.isAccelerometerActive {
             motionManager.stopAccelerometerUpdates()
         }
     }
 }
-
